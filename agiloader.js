@@ -10,9 +10,21 @@ function agiloader (options) {
 
   var loadedBefore = 0;
 
+
   setTimeout( function () {
+    var preboxin = document.getElementById("preload-box-in");
+    preboxin.style.opacity = 0;
     preboxin.style.display = "block";
-  },3000);
+    var i = 0;
+    var si = setInterval(()=>{
+      if (i<1) {
+        i += 0.01;
+        preboxin.style.opacity = i;
+      } else {
+        clearInterval(si);
+      }
+    },10);
+  },800);
 
   document.getElementById('preload-box').innerHTML += '<div id="hidden-preload" style="display:none;"><div>';
 
@@ -112,11 +124,27 @@ function loadscript(options, reqfileBytesLoaded, bytesAll) {
     s.innerHTML = e.responseText;
     document.documentElement.appendChild(s);
     setTimeout(function () {
-      prebox.style.display = "none";
+      var o;
+      prebox.style.opacity = 1;
+      var ex = setInterval( ()=> {
+        o = prebox.style.opacity;
+        o -= 0.01;
+        if (o < 0.02) {
+          prebox.style.display = "none";
+          clearInterval(ex);
+        } else {
+          prebox.style.opacity = o;
+        }
+      },10);
     },50);
+
+    /*
     s.addEventListener("load", function() {
       console.info('loaded 2');
     });
+    */
+
+
   }, false);
 
 }
